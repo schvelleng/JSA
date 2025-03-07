@@ -1,0 +1,109 @@
+PEUSO CODE
+
+
+Get ATHLETE_DF test results
+Get CRITERIA 
+
+Put criteria in a list of lists 
+  EG.. Bowling: 505: >50, VJ > 40
+       Football: 505 >90, VJ > 80, Gender = Male
+       Gymnastics: Height < 40, yBalance > 90, Gender = Female
+       
+
+Function for criteria_match (athlete, sport_criteria)
+
+  For each sport in criteria (loops through all sport):
+    For each criterion (loops through all criterions):
+    
+    Athlete Value = Value of criterion
+  
+      If Athlete Value is NA, NEXT (skip)
+    
+        Extract treshold value and convert to numeric
+          If criterion is ">" , 
+              If athlete value < treshold value return FALSE (fails condition, STOP)
+            
+            Else if criterion is "<",
+                If athlete value > treshold value return FALSE (fails condition, STOP)
+                
+            ELSE criterion is '=',
+              If athlete value not equal to treshold value return FALSE (fails condition, STOP)
+              
+          RETURN TRUE (PASS, match for this sport)
+
+USE CASE EXAMPLE 
+Athlete 1 
+
+505: 70
+VJ: 50
+Height: 30
+Gender: Female
+yBalance = 95
+
+Should qualify for GYMNASTICS and BOWLING
+
+For BOWLING,
+  For 505,
+  Yes, exists in athlete data
+    treshold value = 50
+      
+      If criterion is > ,
+        70 (athlete value) is more than 50 (treshold value) CONTINUE
+      
+   For VJ,
+    treshold value = 40
+      
+      If criterion is >,
+      50 (athlete value) is more than 40 (treshold value) CONTINUE
+   
+  
+  RETURN TRUE (match! STOP)
+  
+FOR FOOTBALL,
+  For 505,
+    treshold value = 90,
+      
+      If criterion is >,
+        50 (athlete value) is less than 90 (treshold value) 
+
+  return FALSE (No Match! STOP)
+        
+FOR GYMNASTICS,
+  
+  For HEIGHT, 
+    treshold value = 40
+    
+      If criterion is <,
+        30 (athlete value) is less than 40 CONTINUE 
+  
+  For yBalance,
+    treshold value = 90
+      
+      If criterion is >,
+        90 (athlete value) is 90 CONTINUE
+        
+  For Gender,
+    value = Female
+      
+      If criterion is =,
+        female (athlete value) = criteria CONTINUE
+        
+  RETURN TRUE (Match Sport, STOP!)
+  
+  
+start an empty list for matched sport 
+
+For each athlete in the dataframe
+    
+    apply function criteria_match(Athlete, CRITERIA)
+    
+    if nothing is returned (empty), return 'OTHERS' 
+    
+    store result in matched sport list
+    
+    matched sport list
+    
+
+
+
+        
