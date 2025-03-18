@@ -10,10 +10,9 @@ Put criteria in a list of lists
        Gymnastics: Height < 40, yBalance > 90, Gender = Female
        
 
-Function for criteria_match (athlete, sport_criteria)
+Function for criteria_match (athlete, sport_criteria ([criteria[[sport]])
 
-  For each sport in criteria (loops through all sport):
-    For each criterion (loops through all criterions):
+    For each criterion (loops through all criterions) in names(sport_criteria):
     
     Athlete Value = Value of criterion
   
