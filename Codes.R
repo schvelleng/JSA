@@ -112,57 +112,55 @@ match_criteria <- function(athlete_info, sport_criteria) {
 
 
 # test function
-match_criteria(athlete, criteria[['Netball']])
+athlete_test <- df_percentiles %>% 
+  select(id, percentile_Agility:percentile_Height, gender) %>% 
+  sample_n(size = 1)
+
+match_criteria(athlete_test, criteria[['Bowling']])
 
 ### STEP 4: GET LIST OF SPORT ----
-sport_matches <- list(Other = c())
 
-athlete_df <- df_percentiles %>% 
-  select(id, percentile_Agility:percentile_Height, gender)
+match_list <- function(input_df){
+  
+  match_by_sport <- list()
+  match_by_athlete <- list()
+  
+  athlete_df <- input_df %>% 
+    select(id, percentile_Agility:percentile_Height, gender)
 
 
-for (i in 1:nrow(athlete_df)) {
-  
-  athlete <- athlete_df[i, , drop = FALSE]
-  matched_sports <- c() 
-  
-  matched <- FALSE  
-  
-  for (sport in names(criteria)) {
-    if (match_criteria(athlete, criteria[[sport]])) {
-      sport_matches[[sport]] <- c(sport_matches[[sport]], athlete$id)
-      matched_sports <- c(matched_sports, sport) # add on sport into vector
+  for (i in 1:nrow(athlete_df)) {
+    
+    athlete <- athlete_df[i, , drop = FALSE]
+    athlete_id <- as.character(athlete$id)
+    matched_sports_counter <- c() 
+    
+    matched <- FALSE  
+    
+    for (sport in names(criteria)) {
+      if (match_criteria(athlete, criteria[[sport]])) {
+        
+        match_by_sport[[sport]] <- c(match_by_sport[[sport]], athlete$id)
+        matched_sports_counter <- c(matched_sports_counter, sport) # add on sport into v
+        ector
+        
+        match_by_athlete[[athlete_id]] <-  c(match_by_athlete[[athlete_id]], sport)
+      }
     }
+  if (length(matched_sports_counter) == 0) {
+    match_by_sport$Other <- c(match_by_sport$Other, athlete$id)
+    match_by_athlete[[athlete_id]] <-  c(match_by_athlete[[athlete_id]], 'Other')
+  }
   }
   
-  if (length(matched_sports) == 0) {
-    sport_matches$Other <- c(sport_matches$Other, athlete$id)
-  }
+  list(match_by_sport = match_by_sport,
+       match_by_athlete = match_by_athlete)
 }
   
 ### TEST 
 athlete_test <- df_percentiles %>% 
-  select(id, percentile_Agility:percentile_Height, gender) %>% 
-  sample_n(size = 300)
+  sample_n(size = 2400)
 
-sport_matches <- list(Other = c())
+match_data <- match_list(athlete_test)
 
-for (i in 1:nrow(athletes_test)) {
-  
-  athlete <- athletes_test[i, , drop = FALSE]
-  matched_sports <- c() 
-  
-  matched <- FALSE  
-  
-  for (sport in names(criteria)) {
-    if (match_criteria(athlete, criteria[[sport]])) {
-      sport_matches[[sport]] <- c(sport_matches[[sport]], athlete$id)
-      matched_sports <- c(matched_sports, sport) # add on sport into vector
-    }
-  }
-  
-  if (length(matched_sports) == 0) {
-    sport_matches$Other <- c(sport_matches$Other, athlete$id)
-  }
-}
 
